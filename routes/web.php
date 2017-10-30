@@ -10,7 +10,23 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group(['middleware'=>['auth']], function(){
+    Route::get('/', function () {
+        return view('admin.dashboard.index');
+    });
 
-Route::get('/', function () {
-    return view('welcome');
+    Route::post('/send','EmailController@send');
+    Route::get('/subscribers', 'SubscribersController@index');
+    Route::post('/add-subscribers', 'SubscribersController@store');
+    Route::post('/upload-subscribers', 'SubscribersController@uploadSubscribers');
+
+    //settings
+    Route::get('/settings', 'SettingsController@index');
+});
+
+Auth::routes();
+
+Route::get('/logout', function(){
+    auth()->logout();
+    return redirect(url('/login'));
 });

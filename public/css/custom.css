@@ -1,0 +1,143 @@
+body {
+    margin:0;
+    background-size:cover;
+    background-attachment: fixed;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header,footer,section,aside {
+    display: block;
+}
+
+header {
+    height: 62px;
+    background-color:  #1f618d;
+    border-bottom: 3px solid #65d4e7;
+}
+
+#top-nav > ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#top-nav > ul > li {
+    float: left;
+    list-style-type: none;
+    margin: 0;
+    padding:6px 0;
+	border-left:1px solid #363e48;
+}
+
+#top-nav > ul > li > a {
+	padding: 15px 10px; 
+	display: block;
+    font-size: 12px;
+    color:white;
+}
+
+#top-nav > ul > li > a {
+    background-color: unset;
+}
+
+#top-nav > ul > li:hover{ background: #5499c7 ;}
+
+/****** main content ***********/
+#content {
+    padding:20px;
+    background-color: #ffffffdc;
+    min-height: 100%;
+}
+
+
+/****** utilities ********/
+#compose-btn {
+    background-color: #65d6e75d;
+    height: 45px;
+    width: 220px;
+    border: 2px solid #5499c7;
+    color: #5499c7;
+    font-size: 18px;
+}
+
+.col-md-8 form {
+    color: #646466;
+    font-size: 20px;
+}
+
+.col-md-8 label {
+    margin-bottom:10px; 
+}
+
+.col-md-8 input[type=text] {
+    border: 1px solid black; 
+    height: 40px;
+    font-size: 18px;  
+}
+
+.col-md-8 textarea {
+    border: 1px solid black;
+    height: 300px; 
+    font-size: 18px;
+    font-style: italic;
+}
+
+.col-md-3 .panel .panel-body {
+    padding: 0;
+}
+
+.col-md-3 ul li:hover {
+    background-color: #eaeff0;
+    color: white;
+}
+
+.col-md-3 a {
+    text-decoration: none;
+    font-size: 17px;
+    color: #646466;
+    display: block;
+}
+
+.col-md-3 .panel-body .active {
+    background-color:white;
+    border: unset;
+    border-left: 3px solid #65d4e7;
+    border-bottom: 1px solid #eaeff0;
+    border-top: 1px solid #eaeff0;
+}
+
+.col-md-3 .panel-body span {
+    margin-right: 40px;
+}
+
+.col-md-3 a:hover {
+    text-decoration: none;
+}
+
+.info-well {
+    padding:10px;
+    border-left: 3px solid #65d4e7;
+    border-right: 3px solid #65d4e7;
+    background-color: white;
+    margin-bottom:20px; 
+}
+
+.panel-body table {
+    font-size: 17px;
+    color: #646466;
+}
+
+#upload-div {
+    padding: 30px;
+    border: 2px dashed #646466;
+}
+
+
+/*********** footer *************/
+footer {
+    padding:20px;
+    background-color: #363e48;
+    color:white;
+    text-align: center;
+    display:block;
+}
