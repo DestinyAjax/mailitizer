@@ -16,12 +16,8 @@ class SettingsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'sender_name' => '247ureports Newsletter',
-                'sender_email' => 'info@247ureport.com',
-                'template_enabled' => 1,
-                'number_of_subscribers' => 5000,
+                'subscribers_limit' => 5000,
                 'login_notification' => 1,
-                'cc_enabled' => 0,
                 'bcc_enabled' => 0,
                 'created_at' => '2017-10-09 09:19:28',
                 'updated_at' => '2017-10-09 08:19:28',

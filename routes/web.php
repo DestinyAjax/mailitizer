@@ -22,6 +22,7 @@ Route::group(['middleware'=>['auth']], function(){
 
     //settings
     Route::get('/settings', 'SettingsController@index');
+    Route::patch('/update-settings', 'SettingsController@update');
 });
 
 Auth::routes();

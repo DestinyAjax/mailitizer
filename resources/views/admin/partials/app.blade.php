@@ -8,38 +8,51 @@
 
     <!-- application default styles -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap-v3.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}" class="skin-color" />
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
     <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
-
-    <style>
-        body {
-            background-image: url({{ asset('images/unnamed.jpg' )}});
-        }
-    </style>
 
     @yield('custom_styles')
 </head>
 <body>
     @include('admin.partials.header')
-    @yield('content')
+    <div id="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    @include('admin.partials.nav')
+                </div>
+                <div class="col-md-9">
+                    @yield('content')
+                </div>
+            </div>
+        </div>
+    </div>
+    
     @include('admin.partials.footer')
     
     <!-- application default script -->
     <script src="{{ asset('js/jquery.min.js') }}"></script> 
-    <script src="{{ asset('js/jquery.ui.custom.js') }}"></script> 
     <script src="{{ asset('js/bootstrap.min.js') }}"></script> 
-    <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script> 
     <script>
-      $(function () {
-        // Replace the <textarea id="editor1"> with a CKEditor
-        // instance, using default configuration.
-        CKEDITOR.replace('editor1');
-        //bootstrap WYSIHTML5 - text editor
-        $(".textarea").wysihtml5();
-      });
+        tinymce.init({
+            selector: '.textarea',
+            height: 300,
+            theme: 'modern',
+            plugins: 'print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount spellchecker imagetools contextmenu colorpicker textpattern help',
+            toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+            image_advtab: true,
+            templates: [
+              { title: 'Test template 1', content: 'Test 1' },
+              { title: 'Test template 2', content: 'Test 2' }
+            ],
+            content_css: [
+              '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+              '//www.tinymce.com/css/codepen.min.css'
+            ]
+        });
     </script>
-
+    
     <script src="{{ asset('js/notify.min.js') }}"></script>
     @if(\Session::has('error'))
         <!-- notification script -->
