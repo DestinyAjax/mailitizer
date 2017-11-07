@@ -1,5 +1,4 @@
 @extends('admin.partials.app')
-
 @section('content')            
 <div class="panel panel-default panel-flush">
     <div class="panel-heading"><i class="fa fa-dashboard"></i> Dashboard</div>
@@ -7,11 +6,11 @@
         <form action="{{ url('/send') }}" method="POST">{{ csrf_field() }}
             <div class="form-group">
                 <label>Subject</label>
-                <input type="text" name="subject" class="form-control" placeholder="Enter Subject of Mail" required>
+                <input type="text" name="subject" style="height: 40px; font-size: 17px;" class="form-control" placeholder="Enter Subject of Mail" required>
             </div>
             <div class="form-group">
                 <label>Send To </label>
-                <textarea class="form-control" name="to"></textarea> 
+                <textarea class="form-control" name="to[]" style="height: 200px;font-size: 17px;"></textarea> 
             </div>
             <div class="form-group">
                 <label>Message</label>
@@ -20,7 +19,6 @@
             <div class="row form-group">
                 <div class="col-md-6">
                     <button type="submit" class="btn btn-md btn-danger compose-btn"><i class="fa fa-send"></i> Send Message</button>
-                    <!-- <button type="button" class="btn btn-md btn-default compose-btn"><i class="fa fa-save"></i> Save As Draft</button> -->
                 </div>
             </div>
         </form>

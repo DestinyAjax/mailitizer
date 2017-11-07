@@ -67,23 +67,23 @@ header,footer,section,aside {
     font-size: 18px; 
 }
 
-.col-md-8 form {
+.col-md-12 form {
     color: #646466;
     font-size: 20px;
 }
 
-.col-md-8 label {
+.col-md-12 label {
     margin-bottom:10px; 
 }
 
-.col-md-8 input[type=text] {
+.col-md-12 input[type=text] {
     border: 1px solid black; 
     height: 40px;
     font-size: 18px;  
 }
 
-.col-md-8 textarea {
-    height: 200px; 
+.col-md-12 textarea {
+    height: 300px; 
     font-size: 18px;
 }
 
