@@ -15,13 +15,23 @@ class CreateSystemSettingsTable extends Migration
     {
         Schema::create('system_settings', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('company_name')->nullable();
+            $table->string('website_url')->nullable();
+            $table->string('logo')->nullable();
+            $table->integer('login_notification')->default(0);
             $table->string('sender_email')->nullable();
             $table->string('sender_name')->nullable();
-            $table->integer('template_enabled')->default(0);
-            $table->string('number_of_subscribrs')->nullable();
-            $table->integer('login_notification')->default(0);
-            $table->integer('cc_enabled')->default(0);
+            $table->string('subscribers_limit')->nullable();
             $table->integer('bcc_enabled')->default(0);
+            $table->string('signature')->nullable();
+            $table->string('service_provider')->nullable();
+            $table->string('api_key')->nullable();
+            $table->string('username')->nullable();
+            $table->string('password')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('youtube')->nullable();
             $table->timestamps();
         });
     }

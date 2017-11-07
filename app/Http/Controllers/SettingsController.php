@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\SystemSetting;
+
 class SettingsController extends Controller
 {
     /**
@@ -13,8 +15,8 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        // $settings = \DB::table("settings")->get();
-        return view('admin.settings.index');
+        $data['settings'] = SystemSetting::first();
+        return view('admin.settings.index')->with($data);
     }
 
     /**
@@ -67,9 +69,34 @@ class SettingsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $data = $request->all();
+        try {
+            $update = SystemSetting::find(1);
+            $update->company_name = $data['company_name'] ? $data['company_name'] : null;
+            $update->website_url = $data['website'] ? $data['website'] : null;
+            $update->sender_name = $data['sender_name'] ? $data['sender_name'] : null;
+            $update->sender_email = $data['sender_email'] ? $data['sender_email'] : null;
+            $update->login_notification = $data['login'];
+            $update->bcc_enabled = $data['bcc'];
+            $update->subscribers_limit = $data['limit'];
+            $update->signature = $data['signature'] ? $data['signature'] : null;
+            $update->service_provider = $data['provider'] ? $data['provider'] : null;
+            $update->api_key = $data['api'] ? $data['api'] : null;
+            $update->username = $data['username'] ? $data['username'] : null;
+            $update->password = $data['password'] ? $data['password'] : null;
+            $update->facebook = $data['facebook'] ? $data['facebook'] : null;
+            $update->twitter = $data['twitter'] ? $data['twitter'] : null; 
+            $update->youtube = $data['youtube'] ? $data['youtube'] : null;
+            $update->instagram = $data['instagram'] ? $data['instagram'] : null;
+            $update->save();
+
+            return redirect()->back()->with("success","Systems updated successfully.");
+
+        } catch(Exception $e) {
+            return redirect()->back()->with("error",$e->getMessage());
+        }
     }
 
     /**

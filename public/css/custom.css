@@ -9,10 +9,17 @@ header,footer,section,aside {
     display: block;
 }
 
-header {
-    height: 62px;
+.navbar {
     background-color:  #1f618d;
     border-bottom: 3px solid #65d4e7;
+}
+
+#bs-example > ul > li > a {
+    color: white;
+}
+
+#bs-example > ul > li > a:hover {
+    color: #d4e6f1;
 }
 
 #top-nav > ul {
@@ -57,7 +64,7 @@ header {
     width: 220px;
     border: 2px solid #5499c7;
     color: #5499c7;
-    font-size: 18px;
+    font-size: 18px; 
 }
 
 .col-md-8 form {
@@ -76,10 +83,8 @@ header {
 }
 
 .col-md-8 textarea {
-    border: 1px solid black;
-    height: 300px; 
+    height: 200px; 
     font-size: 18px;
-    font-style: italic;
 }
 
 .col-md-3 .panel .panel-body {
@@ -126,6 +131,22 @@ header {
     font-size: 17px;
     color: #646466;
 }
+
+.panel-heading {
+    font-size: 17px;
+}
+
+.panel-body {
+    color: #646466;
+    font-size: 17px;
+}
+
+.panel-body h3 {
+    padding: 5px;
+    color: #1f618d;
+    margin-bottom: 20px;
+}
+
 
 #upload-div {
     padding: 30px;
