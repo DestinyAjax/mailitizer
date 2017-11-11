@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Subscriber;
+use App\UserList;
 use Excel;
+
 
 class SubscribersController extends Controller
 {
@@ -14,11 +16,26 @@ class SubscribersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function indexDashboard()
+    {
+        $data['lists'] = UserList::all();
+        
+        return view('admin.dashboard.index')->with($data);
+    }
+
     public function index()
     {
         $data['subscribers'] = Subscriber::all();
+        $data['lists'] = UserList::all();
        
         return view('admin.subscribers.index')->with($data);
+    }
+
+    public function listIndex()
+    {
+        $data['lists'] = UserList::all();
+
+        return view('admin.lists.index')->with($data);
     }
 
     /**
@@ -29,6 +46,28 @@ class SubscribersController extends Controller
     public function create()
     {
         //
+    }
+
+    public function storeList(Request $request) 
+    {
+        $data = $request->all();
+        if(!$data){
+            return redirect()->back()->with("error","Invalid request.");
+        }
+
+        \DB::beginTransaction();
+        try {
+            $list = new UserList();
+            $list->title = $data['title'];
+            $list->description = $data['description'];
+            $list->save();
+
+            \DB::commit();
+            return redirect()->back()->with("success","List has been added successfully.");
+        } catch(Exception $e) {
+            \DB::rollback();
+            return redirect()->back()->with("error",$e->getMessage);
+        }
     }
 
     //email validation function
@@ -60,11 +99,15 @@ class SubscribersController extends Controller
                     if($validator->fails()) {
                         //insert invalid email addresses
                         $invalid = new Subscriber();
+                        $invalid->name = ($data['name']) ? $data['name'] : null;
+                        $invalid->user_list_id = $data['user_list_id'];
                         $invalid->email = $d['email'];
                         $invalid->status = 2;
                         $invalid->save();
                     } else {
                         $valid = new Subscriber();
+                        $valid->name = ($data['name']) ? $data['name'] : null;
+                        $valid->user_list_id = $data['user_list_id'];
                         $valid->email = $d['email'];
                         $valid->status = 1;
                         $valid->save();

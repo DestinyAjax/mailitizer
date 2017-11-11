@@ -5,20 +5,25 @@
     <div class="panel-body">
         <form action="{{ url('/send') }}" method="POST">{{ csrf_field() }}
             <div class="form-group">
-                <label>Subject</label>
+                <label>Subject <span style="color: red;">*</span></label>
                 <input type="text" name="subject" style="height: 40px; font-size: 17px;" class="form-control" placeholder="Enter Subject of Mail" required>
             </div>
             <div class="form-group">
-                <label>Send To </label>
-                <textarea class="form-control" name="to[]" style="height: 200px;font-size: 17px;"></textarea> 
+                <label>Send To <span style="color: red;">*</span></label>
+                <select name="user_list_id" class="form-control" style="font-size: 17px;" required>
+                    <option value="">--select list--</option>
+                    @foreach($lists as $list)
+                        <option value="{{$list['id']}}">{{$list['title']}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
-                <label>Message</label>
-                <textarea id="editor1" class="form-control textarea" placeholder="Type Your Message Here..." name="message"></textarea>
+                <label>Message <span style="color: red;">*</span></label>
+                <textarea id="editor1" name="elm1"></textarea>
             </div>
             <div class="row form-group">
                 <div class="col-md-6">
-                    <button type="submit" class="btn btn-md btn-danger compose-btn"><i class="fa fa-send"></i> Send Message</button>
+                    <button type="button" id="submit" class="btn btn-md btn-danger compose-btn"><i class="fa fa-send"></i> Send Message</button>
                 </div>
             </div>
         </form>
@@ -47,6 +52,34 @@
                     count = content.replace(/\w+/g,"x").replace(/[^x]+/g,"").length;
                 $("#counter").text(count);
             });
-        });    
+        }); 
+       
+       //handling sending mail with ajax
+        $('#submit').on("click",function() {
+            $.LoadingOverlay("show");
+            var val = tinymce.activeEditor.getContent();
+            console.log(val);
+            
+            $.ajax({
+                url: "{{ url('/send') }}",
+                method: "POST",
+                data:{
+                    '_token': "{{csrf_token()}}",
+                    'user_list_id' : $('select[name=user_list_id]').val(),
+                    'subject' : $('input[name=subject]').val(),
+                    'message' : val,
+                    'req' : "mail"
+                },
+                success: function(rst){
+                    $.LoadingOverlay("hide");
+                    swal("Mails Sent!", "Mail sent successfully in "+ rst +" minutes.", "success");
+                    // location.reload();
+                },
+                error: function(rst){
+                    $.LoadingOverlay("hide");
+                    swal("An Error Occured!", rst, "error");
+                }
+            });
+        });   
     </script>
 @endsection

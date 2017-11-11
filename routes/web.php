@@ -11,14 +11,14 @@
 |
 */
 Route::group(['middleware'=>['auth']], function(){
-    Route::get('/', function () {
-        return view('admin.dashboard.index');
-    });
+    Route::get('/', 'SubscribersController@indexDashboard');
 
     Route::post('/send','EmailController@send');
     Route::get('/subscribers', 'SubscribersController@index');
     Route::post('/add-subscribers', 'SubscribersController@store');
     Route::post('/upload-subscribers', 'SubscribersController@uploadSubscribers');
+    Route::get('/lists', 'SubscribersController@listIndex');
+    Route::post('/add-list', 'SubscribersController@storeList');
 
     //settings
     Route::get('/settings', 'SettingsController@index');

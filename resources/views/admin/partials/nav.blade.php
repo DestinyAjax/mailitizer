@@ -8,6 +8,7 @@
             <!-- <li class="list-group-item"><a href=""><i class="fa fa-send"></i> Sent</a></li>
             <li class="list-group-item"><a href=""><i class="fa fa-book"></i> Draft</a></li> -->
             <li class="list-group-item"><a href="{{ url('/subscribers') }}"><i class="fa fa-users"></i> Subscribers</a></li>
+            <li class="list-group-item"><a href="{{ url('/lists') }}"><i class="fa fa-bars"></i> Lists</a></li>
             <!-- <li class="list-group-item"><a href=""><i class="fa fa-folder"></i> Templates</a></li> -->
             <li class="list-group-item"><a href="#"><i class="fa fa-user"></i> My Profile</a></li>
             <li class="list-group-item"><a href="{{ url('/settings') }}"><i class="fa fa-cog"></i> Settings</a></li>

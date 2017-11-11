@@ -62,10 +62,23 @@
                 <form action="{{ url('/add-subscribers') }}" class="horizontal-form" method="POST">
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <label>Email Addresses</label>
-                        <textarea required class="form-control" name="email" placeholder="Enter Email Addresses Here. Note: Seperate email addresses with a comma and no space. E.g. 'welcome@gmail.com,winner@yahoo.com'"></textarea>
+                        <label>Name </label>
+                        <input required style="font-size:16px;" class="form-control" name="name" placeholder="Enter Name">
                     </div>
-                    <button type="submit" class="btn btn-md btn-danger">Run Validation</button>
+                    <div class="form-group">
+                        <label>Email Addresses <span style="color: red;">*</span></label>
+                        <textarea required style="height: 200px;" class="form-control" name="email" placeholder="Enter Email Addresses Here. Note: Seperate email addresses with a comma and no space. E.g. 'welcome@gmail.com,winner@yahoo.com'"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Select List <span style="color: red;">*</span></label>
+                        <select name="user_list_id" class="form-control" style="font-size: 17px;" required>
+                            <option value="">--select list--</option>
+                            @foreach($lists as $list)
+                                <option value="{{$list['id']}}">{{$list['title']}}</option>
+                            @endforeach
+                        </select>
+                    </div><hr/>
+                    <button type="submit" class="btn btn-md btn-primary"><i class="fa fa-save"></i> Submit</button>
                 </form>
             </div>
         </div>
