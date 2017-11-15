@@ -96,7 +96,7 @@
         <div class="container">
             <div class="inner">
                 <div class="header">
-                    <img src="{{ asset('images/22-1.png') }}" height="50" width="200">
+                    <img src="{{ asset('images/logo.png') }}" alt="logo">
                 </div>
                 <div class="title">
                     <div style="float: left;">
@@ -114,9 +114,10 @@
                 </div>
                 <div class="bottom">
                     <center>
-                        <a href="{{ $settings['facebook'] }}" target="_blank"><img src="{{ asset('images/facebook.png') }}" height="30" width="30"></a>
-                        <a href="{{ $settings['twitter'] }}" target="_blank"><img src="{{ asset('images/twitter.png') }}" height="30" width="30"></a>
-                        <a href="{{ $settings['youtube'] }}" target="_blank"><img src="{{ asset('images/youtube.png') }}" height="30" width="30"></a>
+                        <a href="{{ $settings['facebook'] }}" target="_blank"><img src="{{ asset('images/facebook.png') }}" height="50" width="50"></a>
+                        <a href="{{ $settings['twitter'] }}" target="_blank"><img src="{{ asset('images/twitter.png') }}" height="50" width="50"></a>
+                        <a href="{{ $settings['youtube'] }}" target="_blank"><img src="{{ asset('images/youtube.png') }}" height="50" width="50"></a>
+                        <a href="{{ $settings['youtube'] }}" target="_blank"><img src="{{ asset('images/googleplus.png') }}" height="50" width="50"></a>
                     </center>
                 </div>
                 <div class="footer">

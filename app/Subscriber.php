@@ -13,4 +13,8 @@ class Subscriber extends Model
         }
         return false;
     }
+
+    public function UserList(){
+        return $this->belongsTo('App\UserList','user_list_id','id');
+    }
 }

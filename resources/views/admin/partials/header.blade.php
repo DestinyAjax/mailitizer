@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" target=""> <img src="{{ asset('images/22-1.png') }}" height="30" width="150"></a>
+            <a class="navbar-brand" href="{{ config('constants.WEB_URL') }}" target="_blank"> <img src="{{ asset('images/logo.png') }}" alt="logo" class="img-responsive"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->

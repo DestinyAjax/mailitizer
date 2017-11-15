@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\SystemSetting;
+use App\User;
 
 class SettingsController extends Controller
 {
@@ -15,8 +16,16 @@ class SettingsController extends Controller
      */
     public function index()
     {
+        $data['menu_id'] = 6;
         $data['settings'] = SystemSetting::first();
         return view('admin.settings.index')->with($data);
+    }
+
+    public function profileIndex()
+    {
+        $data['menu_id'] = 5;
+        $data['user'] = User::find(auth()->user()->id);
+        return view('admin.profile.index')->with($data);
     }
 
     /**
@@ -90,12 +99,35 @@ class SettingsController extends Controller
             $update->twitter = $data['twitter'] ? $data['twitter'] : null; 
             $update->youtube = $data['youtube'] ? $data['youtube'] : null;
             $update->instagram = $data['instagram'] ? $data['instagram'] : null;
+            $update->googleplus = $data['googleplus'] ? $data['googleplus'] : null;
+
+            if($request->file('logo')){
+                ImageUpload($request->file('logo'));
+            }
+
             $update->save();
 
             return redirect()->back()->with("success","Systems updated successfully.");
 
         } catch(Exception $e) {
             return redirect()->back()->with("error",$e->getMessage());
+        }
+    }
+
+
+    public function profileUpdate(Request $request)
+    {
+        $data = $request->all();
+        try {
+            $update = User::find(auth()->user()->id);
+            $update->email = $data['email'];
+            $update->name = $data['name'];
+            $update->save();
+
+            return redirect()->back()->with("success","Profile updated successfully.");
+            
+        } catch(Exception $e){
+            return redirect()->back()->with("error","error");
         }
     }
 

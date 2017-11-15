@@ -18,6 +18,7 @@ class SubscribersController extends Controller
      */
     public function indexDashboard()
     {
+        $data['menu_id'] = 1;
         $data['lists'] = UserList::all();
         
         return view('admin.dashboard.index')->with($data);
@@ -25,6 +26,7 @@ class SubscribersController extends Controller
 
     public function index()
     {
+        $data['menu_id'] = 2;
         $data['subscribers'] = Subscriber::all();
         $data['lists'] = UserList::all();
        
@@ -33,6 +35,7 @@ class SubscribersController extends Controller
 
     public function listIndex()
     {
+        $data['menu_id'] = 3;
         $data['lists'] = UserList::all();
 
         return view('admin.lists.index')->with($data);
@@ -90,6 +93,7 @@ class SubscribersController extends Controller
         try {
             ini_set('max_execution_time', 300);
 
+            $count=0;
             foreach($email as $e)
             {
                 $d = ['email' => $e];
@@ -99,20 +103,21 @@ class SubscribersController extends Controller
                     if($validator->fails()) {
                         //insert invalid email addresses
                         $invalid = new Subscriber();
-                        $invalid->name = ($data['name']) ? $data['name'] : null;
                         $invalid->user_list_id = $data['user_list_id'];
                         $invalid->email = $d['email'];
                         $invalid->status = 2;
                         $invalid->save();
                     } else {
                         $valid = new Subscriber();
-                        $valid->name = ($data['name']) ? $data['name'] : null;
                         $valid->user_list_id = $data['user_list_id'];
                         $valid->email = $d['email'];
                         $valid->status = 1;
                         $valid->save();
                     }
                 } else {}
+                
+                if($count == (int)config('constants.SUBSCRIBER_LIMIT')){break;}
+                $count++;
             }
 
             return redirect()->back()->with("success","Request success");
@@ -125,18 +130,21 @@ class SubscribersController extends Controller
     public function uploadSubscribers(Request $request)
     {
         if($request->hasFile('subscribers')){
-            $path = $request->file('subscribers')->getRealPath();
-            $data = Excel::load($path, function($reader) {})->get();
+            $file = $request->file('subscribers')->getRealPath();
+            $string = file_get_contents($file, "r");
+            $content = explode(',', $string);
             try {
                 ini_set('max_execution_time', 300);
-
-                //calculating execution time
                 $time_start = microtime(true);
-
-                if(!empty($data) && $data->count()){
-                    foreach ($data->toArray() as $v) {
-                        if(!empty($v)){      
-                            $d = ['email' => $v['email']];
+                
+                if(!empty($content))
+                {
+                    $count=0;
+                    foreach ($content as $v) 
+                    {
+                        if(!empty($v)) {     
+                            $email = strtolower(preg_replace('/\s+/', '', $v)); 
+                            $d = ['email' => $email];
                             $validator = $this->validator($d);
                             $check = Subscriber::hasEmail($d['email']);
                             
@@ -146,24 +154,29 @@ class SubscribersController extends Controller
                                     //insert invalid email addresses
                                     $invalid = new Subscriber();
                                     $invalid->email = $d['email'];
+                                    $invalid->user_list_id = $request->get('user_list_id');
                                     $invalid->status = 2;
                                     $invalid->save();
                                 } else {
                                     //insert valid email addresses
                                     $valid = new Subscriber();
                                     $valid->email = $d['email'];
+                                    $valid->user_list_id = $request->get('user_list_id');
                                     $valid->status = 1;
                                     $valid->save();
                                 } 
                             } else {} 
+                        } else {
+                            return redirect()->back()->with("error","File is empty");
                         }
+                        if($count == (int)config('constants.SUBSCRIBER_LIMIT')){break;}
+                        $count++;
                     }
+                    
                 } else { return redirect()->back()->with("error","Error! There's something wrong with the file your uploaded."); }
 
                 $time_end = microtime(true);
-                //dividing with 60 will give the execution time in minutes other wise seconds
                 $execution_time = ($time_end - $time_start)/60;
-
                 return redirect()->back()->with('success',"Upload Completed successfully in $execution_time Mins");
 
             } catch(Exception $e) {
@@ -215,5 +228,18 @@ class SubscribersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function deleteList(Request $request) 
+    {
+        try {
+            $delete = UserList::find($request->get('list_id'));
+            $delete->delete();
+
+            return redirect()->back()->with("success","List has been deleted successfully.");
+
+        } catch(Exception $e){
+            return redirect()->back()->with("error","An error occured.");
+        }
     }
 }

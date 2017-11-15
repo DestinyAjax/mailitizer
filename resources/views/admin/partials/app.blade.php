@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>247ureport | Dashboard</title>
+    <title>{{ config('constants.COMPANY_NAME') }} | Dashboard</title>
 
     <!-- application default styles -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap-v3.min.css') }}" />
@@ -29,7 +29,7 @@
         </div>
     </div>
     
-    @include('admin.partials.footer')
+    <!-- @include('admin.partials.footer') -->
     
     <!-- application default script -->
     <script src="{{ asset('js/jquery.min.js') }}"></script> 

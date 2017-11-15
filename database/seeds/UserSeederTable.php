@@ -16,9 +16,9 @@ class UserSeederTable extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'name' => '247ureports Admin',
-                'email' => 'admin@247ureport.com',
-                'password' => bcrypt('MoneyTime'),
+                'name' => 'Discover Africa',
+                'email' => 'admin@discoverafricanews.com',
+                'password' => bcrypt('Welcome007'),
                 'created_at' => '2017-03-09 09:19:28',
                 'updated_at' => '2017-03-09 08:19:28',
             )

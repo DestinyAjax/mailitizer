@@ -8,9 +8,6 @@ use App\Subscriber;
 use App\SystemSetting;
 use Mail;
 
-// use PHPMailer\PHPMailer\PHPMailer;
-// // use PHPMailer\PHPMailer\Exception;
-
 use App\Mail\CustomCampaign;
 
 class EmailController extends Controller
@@ -23,9 +20,7 @@ class EmailController extends Controller
         if($datas['req'] == 'mail')
         {
             $settings = SystemSetting::find(1);
-            $listings = Subscriber::where('status','=',1)
-                        ->where('user_list_id','=',$datas['user_list_id'])
-                        ->get();
+            $listings = Subscriber::where('status','=',1)->where('user_list_id','=',$datas['user_list_id'])->get();
 
             $data['subject'] = $datas['subject'];
             $data['content'] = $datas['message'];
@@ -36,18 +31,18 @@ class EmailController extends Controller
             } 
 
             try {
-                ini_set('max_execution_time', 300);
-                
-                //calculating execution time
+                ini_set('max_execution_time', 900);
                 $time_start = microtime(true);
 
                 if($listings){
-                    //subscribers stored on the database
-                    $subscribers = [];
+                    //sending message based on server limit
+                    $count=0;
                     foreach($listings as $key => $ut){
-                        Mail::to($ut['email'])->queue(new CustomCampaign($data));
+                        Mail::to($ut['email'])->send(new CustomCampaign($data));
+                        if($count == (int)config('constants.SUBSCRIBER_LIMIT')){break;}
+                        $count++;
                     }
-                
+                    
                     $time_end = microtime(true);
                     $time = ($time_end - $time_start)/60;
         
@@ -61,54 +56,4 @@ class EmailController extends Controller
             }
         }
     }
-
-
-    // protected function version_1() {
-    //     try {
-    //         ini_set('max_execution_time', 300);
-            
-    //         //calculating execution time
-    //         $time_start = microtime(true);
-    //         $when = \Carbon\Carbon::now()->addMinutes(3);
-
-    //         if($listings){
-    //             //subscribers stored on the database
-    //             $subscribers = [];
-    //             foreach($listings as $key => $ut){
-    //                 $ua = [];
-    //                 $ua['email'] = $ut['email'];
-    //                 $subscribers[$key] = $ua;
-    //             }
-               
-    //             $emails = array_merge($recipient1,$recipient2);
-    //             dd($emails);
-
-                
-    //             //subscribers enter manually
-    //             if(!empty($datas['to'])){
-    //                 $convert = implode(',', $datas['to']);
-    //                 $recipients = explode(',', $convert);
-    //                 foreach($recipients as $key => $v) {
-    //                     $ua = [];
-    //                     $ua['email'] = $v;
-    //                     $ua['name'] = 'Subscriber';
-    //                     array_push($subscribers, (object)$ua);
-    //                 }
-    //             }
-
-    //             $data['subscribers'] = $subscribers;
-    //             Mail::to('admin@discoverafricanews.com')->later($when, new CustomCampaign($data));
-                
-    //             $time_end = microtime(true);
-    //             $execution_time = ($time_end - $time_start)/60;
-    
-    //             return redirect()->back()->with('success',"Sending completed in $execution_time Mins");
-    //         } else {
-
-    //         }
-
-    //     } catch(Exception $e) {
-    //         return redirect()->back()->with("error","Error");
-    //     }
-    // }
 }
