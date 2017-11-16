@@ -21,18 +21,19 @@
                 padding-top: 10px;
                 padding-bottom: 10px;
                 background-color: white;
-                border-top: 10px solid  #5499c7 ;
+                border-top: 10px solid  #0D5076 ;
                 border-bottom: 1px solid grey;
                 border-top-left-radius: 5px;
                 border-top-right-radius: 5px;
             }
 
             .inner .title {
-                background-color: #f2f3f4;
+                background-color: #FF5733;
                 padding-left: 20px;
                 padding-right: 20px;
                 padding-top: 5px;
                 padding-bottom: 5px;
+                color: white;
             }
 
             .inner .title a {
@@ -47,13 +48,13 @@
             }
 
             .inner .title p {
-                color: #5499c7;
+                color: white;
                 margin-top:0px;
                 font-size: 28px;
             }
 
             .inner .title span {
-                color: grey;
+                color: white;
                 font-size: 10px;
             }
 
@@ -67,12 +68,13 @@
             }
 
             .inner .bottom {
-                background-color: #f2f3f4;
+                background-color: #0D5076;
                 padding-left: 20px;
                 padding-top: 5px;
                 padding-bottom: 5px;
                 border-bottom: 1px solid grey;
                 font-size: 13px;
+                color: white;
             }
 
             .inner .bottom a {
@@ -86,6 +88,7 @@
                 border-bottom-right-radius: 5px;
                 border-bottom-left-radius: 5px;
                 font-size: 12px;
+                border-bottom: 10px solid  #0D5076 ;
             }
         </style>
     </head>
@@ -93,7 +96,7 @@
         <div class="container">
             <div class="inner">
                 <div class="header">
-                    <img src="{{ asset('images/22-1.png') }}" height="50" width="200">
+                    <img src="{{ asset('images/logo.png') }}" alt="logo">
                 </div>
                 <div class="title">
                     <div style="float: left;">
@@ -111,9 +114,10 @@
                 </div>
                 <div class="bottom">
                     <center>
-                        <a href="{{ $settings['facebook'] }}" target="_blank"><img src="{{ asset('images/facebook.png') }}" height="30" width="30"></a>
-                        <a href="{{ $settings['twitter'] }}" target="_blank"><img src="{{ asset('images/twitter.png') }}" height="30" width="30"></a>
-                        <a href="{{ $settings['youtube'] }}" target="_blank"><img src="{{ asset('images/youtube.png') }}" height="30" width="30"></a>
+                        <a href="{{ $settings['facebook'] }}" target="_blank"><img src="{{ asset('images/facebook.png') }}" height="50" width="50"></a>
+                        <a href="{{ $settings['twitter'] }}" target="_blank"><img src="{{ asset('images/twitter.png') }}" height="50" width="50"></a>
+                        <a href="{{ $settings['youtube'] }}" target="_blank"><img src="{{ asset('images/youtube.png') }}" height="50" width="50"></a>
+                        <a href="{{ $settings['youtube'] }}" target="_blank"><img src="{{ asset('images/googleplus.png') }}" height="50" width="50"></a>
                     </center>
                 </div>
                 <div class="footer">

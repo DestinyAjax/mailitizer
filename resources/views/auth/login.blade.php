@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{ asset('css/maruti-login.css') }}" />
     <style>
         body {
-            background-image: url({{ asset('images/background.png' )}});
+            background-image: url({{ asset('images/in-background.jpg' )}});
         }
     </style>
 </head>
@@ -25,7 +25,7 @@
             <div class="col-md-4"></div>
             <div class="col-md-4 ">
                 <div class="panel panel-body">
-                    <h3><i class=""></i>Login Page</h3><hr/>
+                    <center><img src="{{ asset('images/logo.png') }}" alt="logo" class="img-responsive"></center><br/>
                     <form method="POST" action="{{ route('login') }}">{{ csrf_field() }}
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label>Email Address</label>
@@ -52,7 +52,7 @@
                     </form>
                 </div>
                 <center>
-                    <p>&copy; 2017. <a href="" target="_blank">247ureports</a>.</p>
+                    <p>&copy; 2017. <a href="{{ config('constants.WEB_URL') }}" target="_blank">{{ config('constants.COMPANY_NAME') }}</a>.</p>
                 </center>
             </div>
         </div>

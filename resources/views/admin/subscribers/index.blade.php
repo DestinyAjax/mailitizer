@@ -23,12 +23,14 @@
                     <p style="color:red;"><em>There are no subscribers yet. Please add or upload bulk subscribers in order to send messages.</em></p>
                 </center>
             @else
-                <table class="table table-bordered js-dataTable-simple">
+                <table class="table table-bordered js-dataTable-full">
                     <thead>
                         <tr>
                             <th>SN</th>
                             <th>EMAIL ADDRESS</th>
+                            <th>PARENT LIST</th>
                             <th>STATUS</th>
+                            <th>ACTION</th>
                         </tr>
                     </thead>
                     @php($count=1)
@@ -41,12 +43,16 @@
                                 <span style="color: red;"><stron><i class="fa fa-trash-o"></i></stron></span>
                                 <?php } ?>
                             </td>
+                            <td><span class="label label-default">{{ $subscriber->UserList->title}}</span></td>
                             <td>
                                 @if($subscriber['status'] == 1)
                                 <span class="label label-success">Valid</span>
                                 @elseif($subscriber['status'] == 2)
                                 <span class="label label-danger">Invalid</span>
                                 @endif
+                            </td>
+                            <td>
+
                             </td>
                         </tr>
                     @php($count++)
@@ -62,10 +68,19 @@
                 <form action="{{ url('/add-subscribers') }}" class="horizontal-form" method="POST">
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <label>Email Addresses</label>
-                        <textarea required class="form-control" name="email" placeholder="Enter Email Addresses Here. Note: Seperate email addresses with a comma and no space. E.g. 'welcome@gmail.com,winner@yahoo.com'"></textarea>
+                        <label>Email Addresses <span style="color: red;">*</span></label>
+                        <textarea required style="height: 200px;" class="form-control" name="email" placeholder="Enter Email Addresses Here. Note: Seperate email addresses with a comma and no space. E.g. 'welcome@gmail.com,winner@yahoo.com'"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-md btn-danger">Run Validation</button>
+                    <div class="form-group">
+                        <label>Select List <span style="color: red;">*</span></label>
+                        <select name="user_list_id" class="form-control" style="font-size: 17px;" required>
+                            <option value="">--select list--</option>
+                            @foreach($lists as $list)
+                                <option value="{{$list['id']}}">{{$list['title']}}</option>
+                            @endforeach
+                        </select>
+                    </div><hr/>
+                    <button type="submit" class="btn btn-md btn-primary"><i class="fa fa-save"></i> Submit</button>
                 </form>
             </div>
         </div>
@@ -75,15 +90,23 @@
         <div id="upload-subscribers" style="display: none;">
             <div class="col-md-5 col-md-offset-3">
                 <div id="upload-div">
-                    <center>
-                        <form action="{{ url('upload-subscribers') }}" method="POST" enctype="multipart/form-data">
-                            {{ csrf_field() }}
-                            <div class="form-group">
-                                <input type="file" name="subscribers" required><br/>
-                                <button type="submit" class="btn btn-md btn-danger"><i class="fa fa-upload"></i> Upload and Validate</button>
-                            </div>
-                        </form>
-                    </center>
+                    <form action="{{ url('upload-subscribers') }}" method="POST" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <label>Select List <span style="color: red;">*</span></label>
+                            <select name="user_list_id" class="form-control" style="font-size: 17px;" required>
+                                <option value="">--select list--</option>
+                                @foreach($lists as $list)
+                                    <option value="{{$list['id']}}">{{$list['title']}}</option>
+                                @endforeach
+                            </select>
+                        </div><hr/>
+                        <div class="form-group">
+                            <input type="file" name="subscribers" required><br/>
+                            <button type="submit" class="btn btn-md btn-danger"><i class="fa fa-upload"></i> Upload and Validate</button>
+                        </div>
+                    </form>
+                    
                 </div>
             </div>
             

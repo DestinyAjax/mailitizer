@@ -11,18 +11,29 @@
 |
 */
 Route::group(['middleware'=>['auth']], function(){
-    Route::get('/', function () {
-        return view('admin.dashboard.index');
-    });
+    Route::get('/', 'SubscribersController@indexDashboard');
 
     Route::post('/send','EmailController@send');
     Route::get('/subscribers', 'SubscribersController@index');
     Route::post('/add-subscribers', 'SubscribersController@store');
     Route::post('/upload-subscribers', 'SubscribersController@uploadSubscribers');
+    
+    //lists
+    Route::get('/lists', 'SubscribersController@listIndex');
+    Route::post('/add-list', 'SubscribersController@storeList');
+    Route::delete('/delete-list','SubscribersController@deleteList');
+    
+    //templates
+    Route::get('/templates', 'TemplatesController@index');
+    Route::post('/activate', 'TemplatesController@activateTemplate');
 
     //settings
     Route::get('/settings', 'SettingsController@index');
     Route::patch('/update-settings', 'SettingsController@update');
+
+    //profile
+    Route::get('/profile', 'SettingsController@profileIndex');
+    Route::patch('/update-profile', 'SettingsController@profileUpdate');
 });
 
 Auth::routes();

@@ -3,7 +3,7 @@
 <div class="panel panel-default panel-flush">
     <div class="panel-heading"><i class="fa fa-dashboard"></i> Dashboard</div>
         <div class="panel-body">
-            <form action="{{ url('/update-settings') }}" method="POST" enctype="form-data">
+            <form action="{{ url('/update-settings') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }} {{ method_field('PATCH') }}
                 <div class="row">
                     <div class="col-md-12">
@@ -56,8 +56,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Subscribers Limit </label>
                             <div class="col-sm-7">
-                                <input type="radio" name="limit" value="5000" <?php if($settings['subscribers_limit'] == '5000') echo "checked"; ?>> 5000
-                                <input type="radio" name="limit" value="unlimited" <?php if($settings['subscribers_limit'] == 'unlimited') echo "checked"; ?>> Unlimited
+                                <input type="number" style="font-size: 18px;" name="limit" class="form-control" value="{{ $settings['subscribers_limit'] }}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -112,6 +111,12 @@
                             <label class="col-sm-3 col-form-label">Youtube </label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" value="{{ $settings['youtube'] }}" name="youtube">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Googleplus </label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" value="{{ $settings['googleplus'] }}" name="googleplus">
                             </div>
                         </div>
                         <div class="form-group row">

@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>247ureport | Dashboard</title>
+    <title>{{ config('constants.COMPANY_NAME') }} | Dashboard</title>
 
     <!-- application default styles -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap-v3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
     <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('js/sweetalert/sweetalert.css') }}" rel="stylesheet">
 
     @yield('custom_styles')
 </head>
@@ -28,15 +29,17 @@
         </div>
     </div>
     
-    @include('admin.partials.footer')
+    <!-- @include('admin.partials.footer') -->
     
     <!-- application default script -->
     <script src="{{ asset('js/jquery.min.js') }}"></script> 
     <script src="{{ asset('js/bootstrap.min.js') }}"></script> 
     <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script> 
+    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
+   
     <script>
         tinymce.init({
-            selector: '.textarea',
+            selector: '#editor1',
             height: 300,
             theme: 'modern',
             plugins: 'print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount spellchecker imagetools contextmenu colorpicker textpattern help',
@@ -52,7 +55,7 @@
             ]
         });
     </script>
-    
+    <script src="{{ asset('js/loadingoverlay.min.js') }}"></script>
     <script src="{{ asset('js/notify.min.js') }}"></script>
     @if(\Session::has('error'))
         <!-- notification script -->
