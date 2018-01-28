@@ -11,13 +11,13 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Company Name </label>
                             <div class="col-sm-7">
-                                <input type="text" name="company_name" value="{{ $settings['company_name'] }}" class="form-control">
+                                <input type="text" name="company_name" value="{{ $settings['company_name'] }}" class="form-control" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Website URL </label>
                             <div class="col-sm-7">
-                                <input type="website" name="website" value="{{ $settings['website_url'] }}" class="form-control" > 
+                                <input type="website" name="website" value="{{ $settings['website_url'] }}" class="form-control" required> 
                             </div>
                         </div>
                         <div class="form-group row">
@@ -37,13 +37,13 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Sender Name </label>
                             <div class="col-sm-7">
-                                <input type="text" name="sender_name" value="{{ $settings['sender_name'] }}" class="form-control">
+                                <input type="text" name="sender_name" value="{{ $settings['sender_name'] }}" class="form-control" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Sender Email </label>
                             <div class="col-sm-7">
-                                <input type="email" value="{{ $settings['sender_email'] }}" class="form-control" name="sender_email">
+                                <input type="email" value="{{ $settings['sender_email'] }}" class="form-control" name="sender_email" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -83,15 +83,33 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Host </label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" value="{{ $settings['host'] }}" name="host" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Port</label>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" value="{{ $settings['port'] }}" name="port" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Encryption </label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" value="{{ $settings['encryption'] }}" name="encryption">
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Username </label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control" value="{{ $settings['username'] }}" name="username">
+                                <input type="text" class="form-control" value="{{ $settings['username'] }}" name="username" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Password </label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control" value="{{ $settings['password'] }}" name="password">
+                                <input type="text" class="form-control" value="{{ $settings['password'] }}" name="password" required>
                             </div>
                         </div>
                         <h3>Social Media</h3>

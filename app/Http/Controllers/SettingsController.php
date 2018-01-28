@@ -83,13 +83,16 @@ class SettingsController extends Controller
         $data = $request->all();
         try {
             $update = SystemSetting::find(1);
-            $update->company_name = $data['company_name'] ? $data['company_name'] : null;
-            $update->website_url = $data['website'] ? $data['website'] : null;
-            $update->sender_name = $data['sender_name'] ? $data['sender_name'] : null;
-            $update->sender_email = $data['sender_email'] ? $data['sender_email'] : null;
+            $update->company_name = $data['company_name'];
+            $update->website_url = $data['website'];
+            $update->sender_name = $data['sender_name'];
+            $update->sender_email = $data['sender_email'];
             $update->login_notification = $data['login'];
             $update->bcc_enabled = $data['bcc'];
             $update->subscribers_limit = $data['limit'];
+            $update->host = $data['host'];
+            $update->port = $data['port'];
+            $update->encryption = $data['encryption'];
             $update->signature = $data['signature'] ? $data['signature'] : null;
             $update->service_provider = $data['provider'] ? $data['provider'] : null;
             $update->api_key = $data['api'] ? $data['api'] : null;

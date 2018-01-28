@@ -16,6 +16,7 @@ class SettingsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
+                'company_name' => "My Company",
                 'subscribers_limit' => 5000,
                 'login_notification' => 1,
                 'bcc_enabled' => 0,

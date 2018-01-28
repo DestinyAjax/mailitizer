@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Subscriber;
 use App\SystemSetting;
 use Mail;
+use App\Template;
 
 use App\Mail\CustomCampaign;
 
@@ -25,34 +26,55 @@ class EmailController extends Controller
             $data['subject'] = $datas['subject'];
             $data['content'] = $datas['message'];
             $data['settings'] = $settings;
+            $template = Template::where('status','=',2)->first();
+
+            if(!$template){
+                return $response = [
+                    'msg' => "Please activate an out-going mail template before continuing.",
+                    'type' => "false"
+                ];
+            }
 
             if($settings && count($settings) < 1) {
-                return "Message cannot complete. Please do your settings before sending.";
+                return $response = [
+                    'msg' => "Failed! Please complete your settings before sending.",
+                    'type' => "false"
+                ];
             } 
 
             try {
-                ini_set('max_execution_time', 900);
+                exec("php artisan queue:work --daemon --tries=3");
+                ini_set('max_execution_time', 0);
                 $time_start = microtime(true);
 
-                if($listings){
+                if(count($listings) < 1){
+                    return $response = [
+                        'msg' => "Failed! Mailing list is empty",
+                        'type' => "false"
+                    ];
+                } else{
                     //sending message based on server limit
-                    $count=0;
+                    $count=1;
                     foreach($listings as $key => $ut){
-                        Mail::to($ut['email'])->send(new CustomCampaign($data));
+                        Mail::to($ut['email'])->queue(new CustomCampaign($data));
                         if($count == (int)config('constants.SUBSCRIBER_LIMIT')){break;}
                         $count++;
                     }
                     
                     $time_end = microtime(true);
                     $time = ($time_end - $time_start)/60;
-        
-                    return $time;
-                } else {
 
-                }
+                    return $response = [
+                        'msg' => "Completed in $time minutes",
+                        'type' => "true"
+                    ];
+                } 
 
             } catch(Exception $e) {
-                return $e->getMessage();
+                return $response = [
+                    'msg' => "Internal Error Occur",
+                    'type' => "false"
+                ];
             }
         }
     }
