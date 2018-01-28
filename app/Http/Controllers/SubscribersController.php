@@ -53,9 +53,12 @@ class SubscribersController extends Controller
 
     public function storeList(Request $request) 
     {
-        $data = $request->all();
+        $data = $request->except('_token');
         if(!$data){
-            return redirect()->back()->with("error","Invalid request.");
+            return $response = [
+                'msg' => "Invalid request. Try again!",
+                'type' => "false"
+            ];
         }
 
         \DB::beginTransaction();
@@ -66,10 +69,16 @@ class SubscribersController extends Controller
             $list->save();
 
             \DB::commit();
-            return redirect()->back()->with("success","List has been added successfully.");
+            return $response = [
+                'msg' => "List added successfully.",
+                'type' => "true"
+            ];
         } catch(Exception $e) {
             \DB::rollback();
-            return redirect()->back()->with("error",$e->getMessage);
+            return $response = [
+                'msg' => "Internal Error Occur",
+                'type' => "false"
+            ];
         }
     }
 
@@ -88,60 +97,73 @@ class SubscribersController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->except('_token');
         $email = explode(',', $data['email']);
         try {
-            ini_set('max_execution_time', 300);
+            ini_set('max_execution_time', 0);
 
-            $count=0;
-            foreach($email as $e)
-            {
-                $d = ['email' => $e];
-                $validator = $this->validator($d);
-                $check = Subscriber::hasEmail($d['email']);
-                if(!$check){
-                    if($validator->fails()) {
-                        //insert invalid email addresses
-                        $invalid = new Subscriber();
-                        $invalid->user_list_id = $data['user_list_id'];
-                        $invalid->email = $d['email'];
-                        $invalid->status = 2;
-                        $invalid->save();
+            if($data['req'] == 'add-subscribers'){
+                $count=0;
+                foreach($email as $e) {
+                    $d = ['email' => $e];
+                    $validator = $this->validator($d);
+                    $check = Subscriber::hasEmail($d['email']);
+                    if(!$check){
+                        if($validator->fails()) {
+                            //insert invalid email addresses
+                            $invalid = new Subscriber();
+                            $invalid->user_list_id = $data['list_id'];
+                            $invalid->email = $d['email'];
+                            $invalid->status = 2;
+                            $invalid->save();
+                        } else {
+                            $valid = new Subscriber();
+                            $valid->user_list_id = $data['list_id'];
+                            $valid->email = $d['email'];
+                            $valid->status = 1;
+                            $valid->save();
+                        }
                     } else {
-                        $valid = new Subscriber();
-                        $valid->user_list_id = $data['user_list_id'];
-                        $valid->email = $d['email'];
-                        $valid->status = 1;
-                        $valid->save();
+                        return $response = [
+                            'msg' => "One of the email address you are trying to upload already exist. Try again.",
+                            'type' => "false"
+                        ];
                     }
-                } else {}
-                
-                if($count == (int)config('constants.SUBSCRIBER_LIMIT')){break;}
-                $count++;
-            }
+                    
+                    if($count == (int)config('constants.SUBSCRIBER_LIMIT')){break;}
+                    $count++;
+                }
 
-            return redirect()->back()->with("success","Request success");
+                return $response = [
+                    'msg' => "Added successfully!",
+                    'type' => "true"
+                ];
+            }
         } catch(Exception $e) {
-            return redirect()->back()->with("error",$e->getMessage());
+            return $response = [
+                'msg' => "Execution Failed!",
+                'type' => "false"
+            ];
         }
     }
 
 
     public function uploadSubscribers(Request $request)
     {
-        if($request->hasFile('subscribers')){
-            $file = $request->file('subscribers')->getRealPath();
+        $data = $request->except('_token');
+
+        if($request->hasFile('file')){
+            $file = $request->file('file')->getRealPath();
             $string = file_get_contents($file, "r");
             $content = explode(',', $string);
+
             try {
-                ini_set('max_execution_time', 300);
+                ini_set('max_execution_time', 0);
                 $time_start = microtime(true);
                 
-                if(!empty($content))
-                {
-                    $count=0;
-                    foreach ($content as $v) 
-                    {
+                if(!empty($content)) {
+                    $count=1;
+                    foreach ($content as $v) {
                         if(!empty($v)) {     
                             $email = strtolower(preg_replace('/\s+/', '', $v)); 
                             $d = ['email' => $email];
@@ -154,35 +176,56 @@ class SubscribersController extends Controller
                                     //insert invalid email addresses
                                     $invalid = new Subscriber();
                                     $invalid->email = $d['email'];
-                                    $invalid->user_list_id = $request->get('user_list_id');
+                                    $invalid->user_list_id = $request->get('list_id');
                                     $invalid->status = 2;
                                     $invalid->save();
                                 } else {
                                     //insert valid email addresses
                                     $valid = new Subscriber();
                                     $valid->email = $d['email'];
-                                    $valid->user_list_id = $request->get('user_list_id');
+                                    $valid->user_list_id = $request->get('list_id');
                                     $valid->status = 1;
                                     $valid->save();
                                 } 
                             } else {} 
                         } else {
-                            return redirect()->back()->with("error","File is empty");
+                            return $response = [
+                                'msg' => "Invalid file content!",
+                                'type' => "false"
+                            ];
                         }
+
                         if($count == (int)config('constants.SUBSCRIBER_LIMIT')){break;}
                         $count++;
                     }
-                    
-                } else { return redirect()->back()->with("error","Error! There's something wrong with the file your uploaded."); }
+
+                } else { 
+                    return $response = [
+                        'msg' => "Execution Failed!",
+                        'type' => "false"
+                    ];
+                }
 
                 $time_end = microtime(true);
                 $execution_time = ($time_end - $time_start)/60;
-                return redirect()->back()->with('success',"Upload Completed successfully in $execution_time Mins");
+
+                return $response = [
+                    'msg' => "Upload Completed in $execution_time Mins",
+                    'type' => "true"
+                ];
 
             } catch(Exception $e) {
-                return redirect()->back()->with("error",$e->getMessage());
+                return $response = [
+                    'msg' => "Execution Failed!",
+                    'type' => "false"
+                ];
             }
-        } else { return redirect()->back()->with("error","Invalid Request"); }
+        } else { 
+            return $response = [
+                'msg' => "Invalid Request!",
+                'type' => "false"
+            ]; 
+        }
     }
 
     /**
@@ -232,14 +275,25 @@ class SubscribersController extends Controller
 
     public function deleteList(Request $request) 
     {
-        try {
-            $delete = UserList::find($request->get('list_id'));
-            $delete->delete();
+        $data = $request->except('_token');
 
-            return redirect()->back()->with("success","List has been deleted successfully.");
+        if($data['req'] == 'deleteList')
+        {
+            try {
+                $delete = UserList::find($data['list_id']);
 
-        } catch(Exception $e){
-            return redirect()->back()->with("error","An error occured.");
+                //deleting subscribers under this list
+                //this is avoid errors
+                $check = \DB::table("subscribers")
+                        ->where('user_list_id','=',$data['list_id'])
+                        ->delete();
+
+                $delete->delete();
+                return ;
+                
+            } catch(Exception $e){
+                return redirect()->back()->with("error","An error occured.");
+            }
         }
     }
 }

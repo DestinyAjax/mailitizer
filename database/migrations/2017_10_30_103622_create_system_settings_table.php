@@ -22,6 +22,9 @@ class CreateSystemSettingsTable extends Migration
             $table->string('sender_email')->nullable();
             $table->string('sender_name')->nullable();
             $table->string('subscribers_limit')->nullable();
+            $table->string('host')->nullable();
+            $table->string('encryption')->nullable();
+            $table->integer('port')->nullable();
             $table->integer('bcc_enabled')->default(0);
             $table->string('signature')->nullable();
             $table->string('service_provider')->nullable();

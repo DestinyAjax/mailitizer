@@ -1,5 +1,6 @@
 @extends('admin.partials.app')
-@section('content')            
+@section('content')       
+<div id="ErrMsg"></div>     
 <div class="panel panel-default panel-flush">
     <div class="panel-heading"><i class="fa fa-dashboard"></i> Dashboard</div>
     <div class="panel-body">
@@ -56,7 +57,9 @@
        
        //handling sending mail with ajax
         $('#submit').on("click",function() {
-            $.LoadingOverlay("show");
+            $(this).attr('disabled',true);
+            $(this).html("<i class='fa fa-refresh fa-spin'></i> Sending mails... please wait");
+
             var val = tinymce.activeEditor.getContent();
             console.log(val);
             
@@ -71,13 +74,23 @@
                     'req' : "mail"
                 },
                 success: function(rst){
-                    $.LoadingOverlay("hide");
-                    swal("Mails Sent!", "Mail sent successfully in "+ rst +" minutes.", "success");
-                    // location.reload();
+                    if(rst.type == "true"){
+                        $("#submit").attr('disabled',false);
+                        $("#submit").html("<i class='fa fa-check'></i> Submit");
+                        $("#ErrMsg").html("<div class='alert alert-success'> "+ rst.msg +" </div>");
+                        location.reload();
+                    }
+                    if(rst.type == "false"){
+                        $("#submit").attr('disabled',false);
+                        $("#submit").html("<i class='fa fa-check'></i> Try Again!");
+                        $("#ErrMsg").html("<div class='alert alert-danger'>"+ rst.msg +"</div>");
+                    }
+                    
                 },
                 error: function(rst){
-                    $.LoadingOverlay("hide");
-                    swal("An Error Occured!", rst, "error");
+                    $("#submit").attr('disabled',false);
+                    $("#submit").html("<i class='fa fa-warning'></i> Try Again!");
+                    $("#ErrMsg").html("<div class='alert alert-danger'>Internal Error Occur</div>");
                 }
             });
         });   

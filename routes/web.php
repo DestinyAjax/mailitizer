@@ -21,7 +21,7 @@ Route::group(['middleware'=>['auth']], function(){
     //lists
     Route::get('/lists', 'SubscribersController@listIndex');
     Route::post('/add-list', 'SubscribersController@storeList');
-    Route::delete('/delete-list','SubscribersController@deleteList');
+    Route::post('/delete-list','SubscribersController@deleteList');
     
     //templates
     Route::get('/templates', 'TemplatesController@index');
